@@ -88,8 +88,9 @@ function UserChat() {
         };
 
         const handleConnectError = (error) => {
-            console.error('❌ User connection failed:', error.message);
-            alert(`Failed to connect to server. Please make sure the server is running on ${SOCKET_URL}\n\nError: ${error.message}`);
+            console.error('❌ User connection failed:', error);
+            const errorMessage = error.message || 'Websocket error';
+            alert(`Failed to connect to server.\n\nPlease make sure the server is running on port 5000.\n\nError: ${errorMessage}\n\nTry:\n1. Check if server is running: npm run server\n2. Verify server is on http://localhost:5000`);
             setStatus('Connection Failed');
             setIsConnected(false);
         };
@@ -140,11 +141,13 @@ function UserChat() {
         console.log(`Attempting to connect to ${SOCKET_URL}...`);
         setStatus('Connecting...');
         const newSocket = io(SOCKET_URL, {
-            transports: ['websocket', 'polling'],
+            transports: ['polling', 'websocket'], // Try polling first, then upgrade to websocket
             reconnection: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 1000,
-            timeout: 10000
+            timeout: 20000, // Increased timeout
+            forceNew: true,
+            upgrade: true
         });
 
         setSocket(newSocket);

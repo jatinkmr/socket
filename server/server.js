@@ -48,7 +48,16 @@ app.get('/api/admin/chats', (req, res) => {
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-    console.log(`New connection: ${socket.id}`);
+    console.log(`✅ New connection: ${socket.id}`);
+    console.log(`   Transport: ${socket.conn.transport.name}`);
+
+    socket.conn.on('upgrade', () => {
+        console.log(`   Transport upgraded to: ${socket.conn.transport.name}`);
+    });
+
+    socket.on('error', (error) => {
+        console.error(`❌ Socket error for ${socket.id}:`, error);
+    });
 
     // User joins chat
     socket.on('user-join', ({ userId, userName }) => {
@@ -248,9 +257,19 @@ io.on('connection', (socket) => {
     });
 });
 
+// Error handling
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`❌ Port ${PORT} is already in use. Please stop the process using this port.`);
+    } else {
+        console.error('❌ Server error:', error);
+    }
+});
+
 // Start server
 const PORT = 5000;
 server.listen(PORT, () => {
     console.log(`✅ Server running on http://localhost:${PORT}`);
     console.log(`📡 Socket.IO server ready for connections`);
+    console.log(`🌐 Allowed origins:`, allowedOrigins);
 });
