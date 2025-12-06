@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# Real-Time Chat System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack real-time chat application built with React and Socket.IO, featuring separate interfaces for users and admins to facilitate customer support conversations.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Real-Time Messaging**: Instant communication between users and admins using WebSockets
+- **Dual Interfaces**: Separate user chat interface and admin dashboard
+- **Room Management**: Dynamic chat rooms for individual user-admin conversations
+- **Typing Indicators**: Real-time typing status for better user experience
+- **Admin Dashboard**: Overview of all active chats with the ability to join and manage conversations
+- **Notifications**: Alerts for admins when new messages arrive in other rooms
+- **CORS Support**: Configurable allowed origins for client connections
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
+- React 19.2.1
+- Socket.IO Client 4.8.1
+- React Testing Library
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- Node.js with Express 5.2.1
+- Socket.IO Server 4.8.1
+- CORS middleware
+- Nodemon for development
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd socket-io
+   ```
 
-### `npm run build`
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Set up environment variables (optional):
+   Create a `.env` file in the root directory:
+   ```
+   CLIENT_URL=http://localhost:3000,http://localhost:3001
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Start the development servers:
+   - Start the backend server:
+     ```bash
+     npm run server
+     ```
+   - In a new terminal, start the React app:
+     ```bash
+     npm start
+     ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The application will be available at `http://localhost:3000` and the server at `http://localhost:5000`.
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Open the application in your browser
+2. Choose between "User Chat" or "Admin Dashboard"
+3. **For Users**: Enter your name and start chatting with support
+4. **For Admins**: View active chats, join conversations, and respond to users
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### API Endpoints
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- `GET /api/health` - Server health check
+- `GET /api/admin/chats` - Get all active chat rooms (admin only)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Socket Events
 
-## Learn More
+#### User Events
+- `user-join` - Join a chat room
+- `user-message` - Send a message
+- `user-typing` - Indicate typing status
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Admin Events
+- `admin-join` - Join the admin system
+- `admin-join-room` - Join a specific chat room
+- `admin-message` - Send a message as admin
+- `admin-typing` - Indicate typing status
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Scripts
 
-### Code Splitting
+- `npm start` - Start the React development server
+- `npm run server` - Start the backend server with nodemon
+- `npm run build` - Build the React app for production
+- `npm test` - Run tests
+- `npm run eject` - Eject from Create React App (not recommended)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Project Structure
 
-### Analyzing the Bundle Size
+```
+socket-io/
+├── public/                 # Static assets
+├── server/
+│   └── server.js          # Express/Socket.IO server
+├── src/
+│   ├── components/        # React components
+│   │   ├── UserChat.jsx   # User chat interface
+│   │   ├── AdminDashboard.jsx # Admin management interface
+│   │   ├── ChatList.jsx   # Chat list component
+│   │   └── ChatMessage.jsx # Message component
+│   ├── App.js             # Main React app
+│   └── index.js           # App entry point
+├── package.json           # Dependencies and scripts
+└── README.md              # This file
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contributing
 
-### Making a Progressive Web App
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and commit: `git commit -m 'Add feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## License
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
